@@ -21,7 +21,21 @@ fun main() {
     }
 
     fun part2(input: List<String>): Int {
-        return input.size
+        val map1 = mutableMapOf<Int,Int>()
+        val map2 = mutableMapOf<Int,Int>()
+        var similarity = 0
+        input.forEach { line ->
+            line.split(Pattern.compile("\\s+")).apply {
+                val firstNum = get(0).toInt()
+                map1[firstNum] = map1.getOrDefault(firstNum,0)+1
+                val secondNum = get(1).toInt()
+                map2[secondNum] = map2.getOrDefault(secondNum,0)+1
+            }
+        }
+        for ((k,v) in map1){
+            similarity += k * v * map2.getOrDefault(k,0)
+        }
+        return similarity
     }
 
     // Test if implementation meets criteria from the description, like:
@@ -29,7 +43,8 @@ fun main() {
 
     // Or read a large test input from the `src/Day01_test.txt` file:
     val testInput = readInput("Day01_test")
-    check(part1(testInput) == 900)
+    check(part1(testInput) == 11)
+    check(part2(testInput) == 31)
 
     // Read the input from the `src/Day01.txt` file.
     val input = readInput("Day01")
